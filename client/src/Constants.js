@@ -1,4 +1,4 @@
 
 module.exports = Object.freeze({
-    url : "http://localhost:5000", 
+    url : "https://blog-app-ten-mu.vercel.app", 
 });
