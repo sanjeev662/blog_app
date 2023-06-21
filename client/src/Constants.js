@@ -1,4 +1,4 @@
 
 module.exports = Object.freeze({
-    url : "https://blog-app-ten-mu.vercel.app", 
+    url : "https://blog-server-nrag.onrender.com", 
 });
