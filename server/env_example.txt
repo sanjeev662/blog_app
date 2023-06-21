@@ -1,0 +1,6 @@
+mongoURI=enter mongodb uri
+
+//for cloudinary
+CLOUDINARYSECRET=enter your cloudinary secret key
+CLOUDAPIKEY=enter cloudinary api key
+CLOUDNAME=enter your cloud name

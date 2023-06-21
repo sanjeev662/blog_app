@@ -29,7 +29,7 @@ const upload = multer({
   },
 });
 
-//for posting blog
+//for creating blog
 Router.post("/upload", upload.single("file"), async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -81,7 +81,7 @@ Router.get("/getBlogById/:id", async (req, res) => {
   }
 });
 
-// for deleting blog
+// for deleting blog by id
 Router.delete("/delete/:id", async (req, res) => {
   try {
     const blogId = req.params.id;
@@ -91,7 +91,7 @@ Router.delete("/delete/:id", async (req, res) => {
       return res.status(404).json({ message: "Blog not found" });
     }
 
-    const imagePath = blog.img_path; 
+    const imagePath = blog.img_path;
     await cloudinary.uploader.destroy(imagePath);
     await Blog.findByIdAndDelete(blogId);
 
@@ -101,32 +101,37 @@ Router.delete("/delete/:id", async (req, res) => {
   }
 });
 
-
+//update blog by id
 Router.put("/update/:id", upload.single("file"), async (req, res) => {
   try {
     const blogId = req.params.id;
     const { title, description } = req.body;
     const { path } = req.file;
 
-    const updatedFields = {
-      title,
-      description,
-      img_path: path,
-    };
-
-    const blog = await Blog.findByIdAndUpdate(blogId, updatedFields, {
-      new: true,
-    });
+    const blog = await Blog.findById(blogId);
 
     if (!blog) {
       return res.status(404).json({ message: "Blog not found" });
     }
+
+    await cloudinary.uploader.destroy(blog.img_path);
+
+    const result = await cloudinary.uploader.upload(path, {
+      folder: "blog_images",
+    });
+
+    blog.title = title;
+    blog.description = description;
+    blog.img_path = result.secure_url;
+
+    await blog.save();
+
+    fs.unlinkSync(path);
 
     res.send(blog);
   } catch (error) {
     res.status(400).send("Error while updating the blog. Try again later.");
   }
 });
-
 
 module.exports = Router;

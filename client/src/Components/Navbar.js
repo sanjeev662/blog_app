@@ -8,7 +8,8 @@ function Navbars() {
   return (
     <Navbar bg="dark" variant="dark" style={{'height' : '10vh' , position:"relative" , width: "100%"}}>
       <Container>
-        <Navbar.Brand href="#home">
+      <Link to="/" style={{ textDecoration: "none" }}>
+        <Navbar.Brand>
           <img
             alt=""
             src={navlogo}
@@ -18,6 +19,7 @@ function Navbars() {
           />{"   "} 
           Blog-app
         </Navbar.Brand>
+        </Link>
 
        <Link to='/createblog'>+ Create Blog</Link>
       </Container>

@@ -10,9 +10,7 @@ function BlogDetail() {
 
   function handleClick() {
     let blogId = blog._id;
-    //add update and delete function
-    console.log(blogId);
-    navigate(`/blogupdate/${blogId}`, { stateupdate: { blog } });
+    navigate(`/blogupdate/${blogId}`, { state: { blog } });
   }
 
   return (

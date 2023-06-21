@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import BlogCard from "./BlogCard";
-
 import axios from "axios";
-import swal from "sweetalert";
+import BlogCard from "./BlogCard";
 import { url } from "../../Constants";
-import { Link, useNavigate } from "react-router-dom";
 
 const BlogList = () => {
   const [blogList, setBlogList] = useState([]);
@@ -19,7 +16,6 @@ const BlogList = () => {
         },
       });
       setErrorMsg("");
-      console.log(data);
       setBlogList(data);
     } catch (error) {
       error.response && setErrorMsg(error.response.data);
@@ -31,7 +27,7 @@ const BlogList = () => {
   }, []);
 
   return (
-    <Container style={{ marginBottom: "2rem", minHeight: "80vh" }}>
+    <Container style={{ marginBottom: "2rem", minHeight: "75vh" }}>
       <Row>
         {blogList.length > 0 ? (
           blogList.map((blog) => {
@@ -52,4 +48,3 @@ const BlogList = () => {
 };
 
 export default BlogList;
-
