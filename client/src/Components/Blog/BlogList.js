@@ -31,13 +31,13 @@ const BlogList = () => {
   }, []);
 
   return (
-    <Container style={{ marginBottom: "2rem",minHeight : "80vh" }}>
+    <Container style={{ marginBottom: "2rem", minHeight: "80vh" }}>
       <Row>
         {blogList.length > 0 ? (
           blogList.map((blog) => {
             return (
-              <Col className="mt-4">
-                <BlogCard key={blog._id} blog={blog} />
+              <Col className="mt-4" key={blog._id}>
+                <BlogCard blog={blog} getBlogList={getBlogList} />
               </Col>
             );
           })
@@ -52,3 +52,4 @@ const BlogList = () => {
 };
 
 export default BlogList;
+

@@ -81,7 +81,7 @@ Router.get("/getBlogById/:id", async (req, res) => {
   }
 });
 
-//for deleting blog
+// for deleting blog
 Router.delete("/delete/:id", async (req, res) => {
   try {
     const blogId = req.params.id;
@@ -91,27 +91,16 @@ Router.delete("/delete/:id", async (req, res) => {
       return res.status(404).json({ message: "Blog not found" });
     }
 
-    const imgPath = path.join(__dirname, "..", blog.img_path);
-    fs.unlink(imgPath, (err) => {
+    const imagePath = blog.img_path; 
+    await cloudinary.uploader.destroy(imagePath);
+    await Blog.findByIdAndDelete(blogId);
 
-      if (err) {
-        console.error("Failed to delete blog:", err);
-        return res.status(500).json({ message: "Failed to delete blog" });
-      }
-
-      Blog.findByIdAndDelete(blogId)
-        .then(() => {
-          res.json({ success: true, message: "Blog deleted successfully" });
-        })
-        .catch((err) => {
-          console.error("Failed to delete blog:", err);
-          res.status(500).json({ message: "Failed to delete blog" });
-        });
-    });
+    res.json({ success: true, message: "Blog deleted successfully" });
   } catch (error) {
-    res.status(400).send("Error while deleting blog. Try again later.");
+    res.status(500).json({ message: "Failed to delete blog" });
   }
 });
+
 
 Router.put("/update/:id", upload.single("file"), async (req, res) => {
   try {

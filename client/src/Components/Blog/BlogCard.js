@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const BlogCard = (props) => {
   const [errorMsg, setErrorMsg] = useState("");
-  const { blog } = props;
+  const { blog, getBlogList } = props;
   const navigate = useNavigate();
 
   function handleClick() {
@@ -20,9 +20,10 @@ const BlogCard = (props) => {
     });
   }
 
-  const deleteblog = async (id, path) => {
+  const deleteBlog = async () => {
     try {
-      const result = await axios.delete(`${url}/blog/delete/${id}`, {
+      const blogId = blog._id;
+      const result = await axios.delete(`${url}/blog/delete/${blogId}`, {
         headers: {
           // 'token': localStorage.getItem('token')
         },
@@ -31,9 +32,11 @@ const BlogCard = (props) => {
       if (result.data.success === true) {
         swal({
           title: "Success!",
-          text: "deleted Successfully",
+          text: "Deleted successfully",
           icon: "success",
           button: "Ok!",
+        }).then(() => {
+          getBlogList(); // Call getBlogList after successful deletion
         });
         navigate("/");
       } else {
@@ -61,7 +64,7 @@ const BlogCard = (props) => {
               ? "https://static.tvmaze.com/uploads/images/medium_portrait/425/1064746.jpg"
               : blog.img_path
           }
-          style={{height:"15rem"}}
+          style={{ height: "15rem" }}
         />
         <Card.Body>
           <Card.Title>{blog.title}</Card.Title>
@@ -72,10 +75,13 @@ const BlogCard = (props) => {
           <Button variant="primary" onClick={handleClick}>
             Read More
           </Button>
-          <Button variant="primary" style={{marginLeft:"5px"}} onClick={deleteblog}>
+          <Button
+            variant="primary"
+            style={{ marginLeft: "5px" }}
+            onClick={deleteBlog}
+          >
             Delete
           </Button>
-          
         </Card.Body>
       </Card>
     </>
